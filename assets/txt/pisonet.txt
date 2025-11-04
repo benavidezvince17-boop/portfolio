@@ -1,0 +1,67 @@
+#include <WiFi.h>
+#include <esp_netif.h>
+#include <nvs_flash.h>
+#include <esp_log.h>
+#include <WiFiClient.h>
+#include <DNSServer.h>
+
+const char* ssid = "VINCE";  // Your home Wi-Fi SSID
+const char* password = "TEST";  // Your home Wi-Fi password
+
+const char* ap_ssid = "ESP32_V9";   // AP SSID (open, no password)
+
+DNSServer dnsServer;                // DNS server object
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+  
+  // Initialize NVS
+  nvs_flash_init();
+
+  // Initialize Wi-Fi in station + AP mode
+  WiFi.mode(WIFI_AP_STA);
+  
+  // Connect to Wi-Fi (STA)
+  WiFi.begin(ssid, password);
+  
+  // Wait for connection
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected to Wi-Fi");
+
+  // Set up OPEN Access Point (no password)
+  WiFi.softAP(ap_ssid);  
+  Serial.print("AP IP address: ");
+  Serial.println(WiFi.softAPIP());
+
+  // Start DNS server, respond with the AP's IP
+  dnsServer.start(53, "*", WiFi.softAPIP());
+
+  // Start DHCP server for AP
+  esp_netif_dhcps_start(esp_netif_get_handle_from_ifkey("WIFI_AP_DEF"));
+
+  // Enable NAT routing
+  setupNAT();
+}
+
+void loop() {
+  dnsServer.processNextRequest();  // Handle DNS requests
+}
+
+void setupNAT() {
+  // Enable NAPT (Network Address Port Translation)
+  esp_netif_t* netif_sta = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+  esp_netif_t* netif_ap = esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
+
+  // Enable NAPT for STA
+  esp_err_t result = esp_netif_napt_enable(netif_sta);
+  if (result == ESP_OK) {
+    Serial.println("NAPT enabled successfully.");
+  } else {
+    Serial.printf("Failed to enable NAPT. Error: %d\n", result);
+  }
+}
