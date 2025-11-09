@@ -24,10 +24,28 @@ h6 {
   font-family: "Raleway", sans-serif;
 }
 
+.projects-wrapper {
+  display: flex;
+  justify-content: left;
+  gap: 300px;
+}
 
-/*--------------------------------------------------------------
-# Back to top button
---------------------------------------------------------------*/
+.project-col {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-col li {
+  margin: 6px 0;
+}
+
+.project-col a {
+  text-decoration: none;
+}
+
+
+
 .back-to-top {
   position: fixed;
   visibility: hidden;
