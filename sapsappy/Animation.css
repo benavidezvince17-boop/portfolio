@@ -58,7 +58,7 @@
 /* Sapsappy fish */
 .sapsappy {
   position: absolute;
-  height: 200px; /* 3x clownfish */
+  height: 90px; 
   left: 50%;
   top: 50%;
   transform-origin: center;
