@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--This code is written by @Avinash kumar-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Tank Animation</title>
+    <link rel="stylesheet" href="Animation.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="fish-container">
+            <img src="fishes.svg" class="smallFish">
+            <img src="clown-fish.svg" class="fish1">
+            <img src="fish2.svg" class="fish2">
+            <img src="fish.svg" class="fish3">
+            <!-- New sapsappy fish -->
+            <img src="sapsappy.png" class="sapsappy">
+        </div>
+        <div class="bubble-container">
+            <img src="bubbles.svg" class="bubble1">
+            <img src="bubbles.svg" class="bubble2">
+            <img src="bubbles.svg" class="bubble3">
+        </div>
+    </div>
+    <!-- JavaScript for random bouncing sapsappy -->
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sapsappy = document.querySelector(".sapsappy");
+
+    // Starting position at the center
+    let posX = window.innerWidth / 2;
+    let posY = window.innerHeight / 2;
+
+    // Random initial velocity (slower, for smoother movement)
+    let velocityX = (Math.random() * 1.5 + 0.5) * (Math.random() < 0.5 ? 1 : -1);
+    let velocityY = (Math.random() * 1.5 + 0.5) * (Math.random() < 0.5 ? 1 : -1);
+
+    function updatePosition() {
+        posX += velocityX;
+        posY += velocityY;
+
+        const fishWidth = sapsappy.offsetWidth;
+        const fishHeight = sapsappy.offsetHeight;
+
+        // Bounce off left/right edges
+        if (posX <= 0) {
+            posX = 0;
+            velocityX *= -1;
+        } else if (posX + fishWidth >= window.innerWidth) {
+            posX = window.innerWidth - fishWidth;
+            velocityX *= -1;
+        }
+
+        // Bounce off top/bottom edges
+        if (posY <= 0) {
+            posY = 0;
+            velocityY *= -1;
+        } else if (posY + fishHeight >= window.innerHeight) {
+            posY = window.innerHeight - fishHeight;
+            velocityY *= -1;
+        }
+
+        // Flip fish based on horizontal movement direction
+        sapsappy.style.transform = `scaleX(${velocityX > 0 ? 1 : -1})`;
+
+        // Apply new position
+        sapsappy.style.left = `${posX}px`;
+        sapsappy.style.top = `${posY}px`;
+
+        requestAnimationFrame(updatePosition);
+    }
+
+    updatePosition();
+});
+
+    </script>
+
+</body>
+</html>
