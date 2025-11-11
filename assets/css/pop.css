@@ -1,36 +1,43 @@
-    #openImage {
-      width: 200px;        /* Make the preview image 400px */
-      cursor: pointer;
-      border-radius: 5px;
-    }
 
-    /* Popup background */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-    }
+/* Style the thumbnail image */
+#openImage {
+    width: 200px;        /* Make the preview image 400px */
+    cursor: pointer;
+    border-radius: 5px;
+}.popup-trigger {
 
-    /* Full image */
-    #popup img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 8px;
-    }
+  width: 200px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
-    /* Close button */
-    #closeBtn {
-      position: absolute;
-      top: 20px;
-      bottom: 40px;
-      font-size: 35px;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
+/* Fullscreen popup */
+#popup {
+  display: none;
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 */
+  background: black; /* pure black overlay */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Image fills entire screen but keeps aspect ratio */
+#popupImage {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain; /* shows the whole image without cropping */
+  background-color: black;
+}
+
+/* Close button */
+#closeBtn {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  font-size: 45px;
+  color: white;
+  cursor: pointer;
+  z-index: 10000;
+  font-weight: bold;
+}
